@@ -6,23 +6,23 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 /**
- * An implementation of ConnectionPool submitted to fulfill the Opower Connection Pool Homework assignment
+ * My implementation of ConnectionPool interface submitted to fulfill the Opower Connection Pool Homework assignment.
  *
  * <P>
  * To grade this assignment please compile and run using the test SQLConnectionPoolTest.java which 
- * utilizes JUnit and EasyMock
+ * utilizes JUnit and EasyMock.
  * 
  * <P>
  * Features
  * <ul>
- * <li>thread safe
- * <li>handles class of cases where the user closes a connection obtained from the pool
- * <li>closes connections which are older than one minute on the next connection
+ * <li>Getting and releasing connections is thread safe.
+ * <li>Handles class of cases where the user closes a connection obtained from the pool.
+ * <li>Closes connections which are older than one minute on the next connection.
  * </ul>
  * <P>
  * Assumptions
  * <P>
- * Named the concrete class 'SQL' since the homework interface implies SQLException
+ * Named the concrete class 'SQL' since the homework interface implies SQLException.
  * <P>
  * TODO
  * <ul>
@@ -30,11 +30,11 @@ import java.util.Hashtable;
  * is valid connection timeout?  Dial it down to a 'short' amount of time? 
  * Decrease the scope of synchronized?
  * <P>
- * <li>Implement a maximum pool size
- * <li>use log log4j
+ * <li>Implement a maximum pool size.
+ * <li>Use log log4j.
  * </ul>
  * <P>
- * props to http://sourcemaking.com/design_patterns/object_pool/java
+ * Props to http://sourcemaking.com/design_patterns/object_pool/java
  * 
  * @author dhagan
  * <P>
@@ -132,7 +132,7 @@ public class SQLConnectionPool implements ConnectionPool {
     }
 
     /**
-     * Closes a connection
+     * Closes a connection.
      * 
      * @param connection the connection to be closed
      */

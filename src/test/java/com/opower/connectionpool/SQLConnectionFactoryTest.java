@@ -10,7 +10,7 @@ import org.junit.Ignore;
 import static org.junit.Assert.*;
 
 /**
- *
+ * TODO: Fill out this test.  Please see SQLConnectionPoolTest.java
  * @author dhagan
  */
 public class SQLConnectionFactoryTest {

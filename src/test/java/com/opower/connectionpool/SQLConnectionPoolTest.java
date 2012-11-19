@@ -77,7 +77,7 @@ public class SQLConnectionPoolTest {
     }
 
     /**
-     * Test of releaseConnection method, of class SQLConnectionPool.  Basic smoke test, create a connection,
+     * Test of releaseConnection method, of class SQLConnectionPool.  Create a connection,
      * and then release the same connection.
      * @throws Exception 
      */
@@ -95,7 +95,7 @@ public class SQLConnectionPoolTest {
     }
 
     /**
-     * Gets 2 different connections and releases one, then re-acquires the connection 
+     * Gets 2 different connections and releases one, then re-acquires the first connection 
      * @throws Exception 
      */
     @Test
@@ -119,12 +119,12 @@ public class SQLConnectionPoolTest {
     }
 
     /**
-     * Having a little fun here, get 2 different connections and but one of them is invalid, release the first connection
+     * Having a little fun here, get 2 different connections and but 1 of them is invalid, release the first connection
      * and then get a new connection.  
      * <P>
-     * Writing this test exposes that you the connection factory should not allow you to get an invalid connection.
+     * Writing this test exposes that the connection factory should not allow you to get an invalid connection.
      * So if the connection factory / DriverManager does not check if a connection is valid, we should do so
-     * at the bottome of SQLConnectionPool::getConnection().  And so it goes!
+     * at the bottom of SQLConnectionPool::getConnection().  And so it goes!
      * @throws Exception 
      */
     @Test
@@ -202,7 +202,7 @@ public class SQLConnectionPoolTest {
     }
 
     /**
-     * Test of isValid method, of class SQLConnectionPool.
+     * Having a little more fun, couldn't - couldn't get this test to work...
      * @throws SQLException 
      */
     @Ignore //(expected = SQLException.class)
