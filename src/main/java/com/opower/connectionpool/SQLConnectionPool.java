@@ -10,7 +10,7 @@ import java.util.Hashtable;
  *
  * <P>
  * To grade this assignment please compile and run using the test SQLConnectionPoolTest.java which 
- * utiliizes JUnit and EasyMock
+ * utilizes JUnit and EasyMock
  * 
  * <P>
  * Features

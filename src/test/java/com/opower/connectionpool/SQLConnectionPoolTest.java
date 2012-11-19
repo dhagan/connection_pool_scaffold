@@ -61,7 +61,7 @@ public class SQLConnectionPoolTest {
     }
 
     /**
-     * Test of getConnection method, of class SQLConnectionPool.
+     * Test of getConnection method, of class SQLConnectionPool.  Basic smoke test, create a connection.
      * @throws Exception 
      */
     @Test
@@ -77,7 +77,8 @@ public class SQLConnectionPoolTest {
     }
 
     /**
-     * Test of releaseConnection method, of class SQLConnectionPool.
+     * Test of releaseConnection method, of class SQLConnectionPool.  Basic smoke test, create a connection,
+     * and then release the same connection.
      * @throws Exception 
      */
     @Test
@@ -91,6 +92,62 @@ public class SQLConnectionPoolTest {
         sqlConnectionPool.releaseConnection(mockConnection);
         verify(mockSQLConnectionFactory);
         System.out.println("Success releaseConnection");
+    }
+
+    /**
+     * Gets 2 different connections and releases one, then re-acquires the connection 
+     * @throws Exception 
+     */
+    @Test
+    public void testGetConnections() throws Exception {
+        System.out.println("getConnectionsAndRelease");
+        Connection mockConnection2 = createMock(Connection.class);
+        expect(mockConnection2.isValid(SQLConnectionPool.MAX_IS_VALID_CONNECTION_TIMEOUT)).andReturn(Boolean.TRUE);
+        replay(mockConnection2);
+
+        expect(mockSQLConnectionFactory.getConnection()).andReturn(mockConnection).andReturn(mockConnection2);
+        replay(mockSQLConnectionFactory);
+
+        SQLConnectionPool sqlConnectionPool = new SQLConnectionPool(mockSQLConnectionFactory);
+        assertEquals("Connection not returned", sqlConnectionPool.getConnection(), mockConnection);
+        assertEquals("Connection not returned", sqlConnectionPool.getConnection(), mockConnection2);
+        sqlConnectionPool.releaseConnection(mockConnection);
+        assertEquals("Connection not returned", sqlConnectionPool.getConnection(), mockConnection);
+
+        verify(mockSQLConnectionFactory);
+        System.out.println("Success getConnectionsAndRelease");
+    }
+
+    /**
+     * Having a little fun here, get 2 different connections and but one of them is invalid, release the first connection
+     * and then get a new connection.  
+     * <P>
+     * Writing this test exposes that you the connection factory should not allow you to get an invalid connection.
+     * So if the connection factory / DriverManager does not check if a connection is valid, we should do so
+     * at the bottome of SQLConnectionPool::getConnection().  And so it goes!
+     * @throws Exception 
+     */
+    @Test
+    public void testGetConnectionClosed() throws Exception {
+        System.out.println("getConnectionsAndRelease");
+        Connection mockConnection2 = createMock(Connection.class);
+        mockConnection2.close();
+        // return false, invalid connection
+        expect(mockConnection2.isValid(SQLConnectionPool.MAX_IS_VALID_CONNECTION_TIMEOUT)).andReturn(Boolean.FALSE);
+        replay(mockConnection2);
+
+        // N.B. reversal of connections 2 first
+        expect(mockSQLConnectionFactory.getConnection()).andReturn(mockConnection2).andReturn(mockConnection);
+        replay(mockSQLConnectionFactory);
+
+        // release connection 2 forces expire, since it's invalid
+        SQLConnectionPool sqlConnectionPool = new SQLConnectionPool(mockSQLConnectionFactory);
+        assertEquals("Connection not returned", sqlConnectionPool.getConnection(), mockConnection2);
+        sqlConnectionPool.releaseConnection(mockConnection2);
+        assertEquals("Connection not returned", sqlConnectionPool.getConnection(), mockConnection);
+
+        verify(mockSQLConnectionFactory);
+        System.out.println("Success getConnectionsAndRelease");
     }
 
     /**
